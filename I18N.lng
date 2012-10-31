@@ -1,0 +1,17 @@
+who:Eu como
+what:Quero
+why:Para
+scenario:Cenario
+given:Dado que
+when:Quando
+then:Entao
+navigate:navego
+type:E preencho
+find:vejo
+click:E clico
+selectRadio:E Seleciono
+selectCombo:E escolho
+inputtxt:o campo
+button:botao
+submit:E envio
+option:opção

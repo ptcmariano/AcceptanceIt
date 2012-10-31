@@ -1,0 +1,26 @@
+Eu como comprador de casa, Quero simular financiamento, Para avaliar se devo obter esse produto do banco
+
+Cenario 1 - Verifico a opção de financiamento
+Dado que Eu abro navegador
+Quando navego para https://ww3.itau.com.br/imobline/pre/simuladores_new/fichaProposta/index.aspx?IMOB_TipoBKL=&ident_bkl=pre
+E Selecion*a opção rdoTipoImovelRes
+E preencho o campo "txtValorImovel" com valor "80000"
+E preencho o campo "txtValorEntrada" com valor "10000"
+E preencho o campo "txtPrazo" com valor "120"
+E preencho o campo "txtDiaNascProp1" com valor "11"
+E preencho o campo "txtMesNascProp1" com valor "09"
+E preencho o campo "txtAnoNascProp1" com valor "1986"
+E preencho o campo "txtAnoNascProp1" com valor "1986"
+E preencho o campo "txtValorRendaProp1" com valor "3000"
+E clico no botao "btSimular"
+Entao vejo o texto "70.000,00"
+/
+
+Cenario 2 - Verifico a opção de financiamento
+Dado que Eu abro navegador
+Quando navego para https://www.itaucred.com.br/Itaucred_InstitucionalDinamico/simulador/inicio.screen
+E Seleciono opção 2010
+E preencho o campo "Text4" com valor "30000"
+E preencho o campo "Text1" com valor "6000"
+E envio os dados
+Entao Vejo o texto "30.000,00"
