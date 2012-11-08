@@ -11,7 +11,7 @@
 #include <Debug.au3>
 
 ; #FUNCTION# ====================================================================================================================
-; Name...........: 
+; Name...........: Action_FormSubmit
 ; Description ...: 
 ; Syntax.........: 
 ; Parameters ....: 
@@ -29,12 +29,12 @@
 Func Action_FormSubmit($oIE, $idForm)
 	
 	$oForm = _IEFormGetCollection($oIE, $idForm)
-	
+	MsgBox(0,"","Submitou")
 	_IEFormSubmit($oForm)
 	
 EndFunc
 ; #FUNCTION# ====================================================================================================================
-; Name...........: 
+; Name...........: Action_ButtonClick
 ; Description ...: 
 ; Syntax.........: 
 ; Parameters ....: 
@@ -54,9 +54,10 @@ Func Action_ButtonClick($oIE, $nObj)
 	$vObj = _IEGetObjByName($oIE, $nObj)
 	_IEAction($vObj, "click")
 	_IELoadWait ($oIE)
+	
 EndFunc
 ; #FUNCTION# ====================================================================================================================
-; Name...........: 
+; Name...........: Action_SearchText
 ; Description ...: 
 ; Syntax.........: 
 ; Parameters ....: 
@@ -72,21 +73,23 @@ EndFunc
 ; 
 ; ===============================================================================================================================
 Func Action_SearchText($oIE, $text)
+	_IELoadWait($oIE)
 	
-	$oElements = _IETagNameAllGetCollection($oIE)
+	$oElements = _IETagNameAllGetCollection ($oIE)
 	
 	For $oElement In $oElements
-		
-		
-	If StringInStr( $oElement.outerText, $text, 0 ) <>0 Then
-		Return "Find text: " & $text
-	EndIf
+	
+		If StringInStr( $oElement.innerText, $text, 0 ) <>0 Then
+			Return "Find text: " & $text
+		EndIf
 	
 	Next
+	
 	Return "Not find: " & $text
+	
 EndFunc
 ; #FUNCTION# ====================================================================================================================
-; Name...........: 
+; Name...........: Action_Option
 ; Description ...: 
 ; Syntax.........: 
 ; Parameters ....: 
@@ -113,19 +116,19 @@ EndFunc
 ; Name...........: Action_TextboxType
 ; Description ...: Click on button
 ; Syntax.........: Action_TextboxType($text)
-; Parameters ....: $text  - string with text to type
+; Parameters ....: $oIE, $idForm, $id, $text = "text"
 ; Return values .: 
 ; Author ........: Paulo.Mariano
 ; Modified.......: 
-; Remarks .......: 
-; Related .......: Send
+; Remarks .......: Find on forms the fild selected and fill with text
+; Related .......: _IEFormElementSetValue
 ; Link ..........:
 ; Example .......:
 ; 
 ; *
 ; 
 ; ===============================================================================================================================
-Func Action_TextboxType($oIE, $idForm, $id, $text = "texto")
+Func Action_TextboxType($oIE, $idForm, $id, $text = "text")
 	
 	$oForm = _IEFormGetCollection($oIE, $idForm)
 	

@@ -16,11 +16,3 @@ E clico no botao "btSimular"
 Entao vejo o texto "70.000,00"
 /
 
-Cenario 2 - Verifico a opção de financiamento
-Dado que Eu abro navegador
-Quando navego para https://www.itaucred.com.br/Itaucred_InstitucionalDinamico/simulador/inicio.screen
-E Seleciono opção 2010
-E preencho o campo "Text4" com valor "30000"
-E preencho o campo "Text1" com valor "6000"
-E envio os dados
-Entao Vejo o texto "30.000,00"

@@ -1,0 +1,30 @@
+I as Player of 
+
+Scenario 1 - Navigate option 5 verify option 5
+Given open browser
+I navigate for http://localhost/yii/demos/hangman/index.php
+And select the option 5
+And click on button "yt0"
+Then see the text "maximum of 5"
+/
+Scenario 2 - Navigate option 10 verify option 3
+Given open browser
+I navigate for http://localhost/yii/demos/hangman/index.php
+And select the option 10
+And click on button "yt0"
+Then see the text "maximum of 3"
+/
+Scenario 3 - Navigate option 3 verify option 3
+Given open browser
+I navigate for http://localhost/yii/demos/hangman/index.php
+And select the option 3
+And click on button "yt0"
+Then see the text "maximum of 3"
+/
+Scenario 3 - Not select option and see mensage alert
+Given open browser
+I navigate for http://localhost/yii/demos/hangman/index.php
+And not selection the option
+And click on button "yt0"
+Then see the text "You must choose"
+/

@@ -4,8 +4,7 @@
  Author:         Paulo Tiago Castanho Mariano
 
  Script Function:
-	Ler linhas do arquivo passado como parametro
-	Exibir as linhas em MsgBox
+	Interpreter user stories and send action on internet explorer
 
 #ce ----------------------------------------------------------------------------
 #include <File.au3>
@@ -15,7 +14,7 @@
 #include <Debug.au3>
 
 
-$arquivo = _WinAPI_GetOpenFileName("","All Files (*.*)",".","text.acc")
+$arquivo = _WinAPI_GetOpenFileName("","All Files (*.*)",".","text-us.acc")
 
 ;$arquivo = $CmdLine[1]
 
@@ -24,17 +23,19 @@ Dim $oIE
 
 _FileReadToArray($arquivo[1]&"\"&$arquivo[2],$array)
 
-_DebugSetup ("Teste de aceitação: "&$arquivo[2],True,5)
+_DebugSetup ("AcceptanceIt: "&$arquivo[2], False, 1)
 
 ;read lines of internacionalization
 Dim $who,$what,$why
 Dim $scenario,$given,$when,$then
-Dim $type,$find,$click,$selectRadio,$inputtxt,$button,$navigate,$submit,$option
+Dim $type,$find,$click,$selectRadio,$inputtxt,$button,$navigate,$submit,$option,$selectCombo
 Local $aRecords
-If Not _FileReadToArray("I18N.lng", $aRecords) Then
-    MsgBox(4096, "Error", " Error reading log to Array     error:" & @error)
+
+If Not _FileReadToArray("I18N-en.lng", $aRecords) Then
+    MsgBox(4096, "Error", " Error reading log to Array  >> error:" & @error)
     Exit
 EndIf
+
 For $x = 1 To $aRecords[0]
     ;MsgBox(0, 'Record:' & $x, $aRecords[$x])
 	Internationalization($aRecords[$x])
@@ -44,89 +45,86 @@ Next
 For $c = 1 To UBound($array)-1
 
 	AnalyseLine($array[$c])
-	;_DebugReport("linha: " & $c)
+	
 Next
 
 
-Func AnalyseLine($linha)
+Func AnalyseLine($line)
 	
 	;See if have the user for story
-   If StringInStr( $linha , $who ,0) Then
+   If StringInStr( $line , $who ,0) <> 0 Then
 		;here found info for create Log
-		_DebugReport($linha)
+		_DebugReport($line)
 	
 	;See if have the propose for story
-   ElseIf StringInStr($linha, $scenario, 0) Then
+   ElseIf StringInStr($line, $scenario, 0) <> 0 Then
 	
-		;MsgBox(0, "Cenario", "Cenario: " & $linha )
-		_DebugReport(">> " & $linha)
-	
+		_DebugReport(">> " & $line)
 	
 	;See if need open browser
-   ElseIf StringInStr($linha, $given, 0) Then
+   ElseIf StringInStr($line, $given, 0) <> 0 Then
 		$oIE = _IECreate()
 		
 	;See if need navigate
-   ElseIf StringInStr($linha, $navigate, 0) Then
+   ElseIf StringInStr($line, $navigate, 0) <> 0 Then
 		Local $arr
-		$arr = StringSplit($linha, " ",1)
+		$arr = StringSplit($line, " ",1)
 		
 		_IENavigate($oIE, $arr[$arr[0]])
 		_IELoadWait($oIE)
 	
 	;See if have text to fill
-   ElseIf StringInStr( $linha , $type ,0) == 1 Then
+   ElseIf StringInStr( $line , $type ,0) <> 0 Then
 		
 		;
-		If StringRegExp($linha, $inputtxt, 0) == 1 Then
+		If StringInStr($line, $inputtxt, 0) <> 0 Then
 			Local $arr 
-			$arr = StringSplit($linha, '"',1)
+			$arr = StringSplit($line, '"',1)
 			
-			Action_TextboxType($oIE, "0", $arr[2], $arr[4]);mudar para variaveis
+			Action_TextboxType($oIE, "0", $arr[2], $arr[4])
 		EndIf
 		
-   ElseIf StringInStr( $linha , $click,0) == 1 Then
+   ElseIf StringInStr( $line , $click,0) <> 0 Then
 		
-		If StringRegExp($linha, $button, 0) == 1 Then
+		If StringInStr($line, $button, 0) <> 0 Then
 			Local $arr 
-			$arr = StringSplit($linha, '"',1)
-			
+			$arr = StringSplit($line, '"',1)
 			
 			Action_ButtonClick($oIE, $arr[2])
 			
 		EndIf
 		
-   ElseIf StringInStr( $linha , $then ,0) == 1 Then
+   ElseIf StringInStr( $line , $then ,0) <> 0 Then
 		
-		If StringRegExp($linha, $find, 0) == 1 Then
+		If StringInStr($line, $find, 0) <> 0 Then
 			Local $arr 
-			$arr = StringSplit($linha, '"',1)
+			$arr = StringSplit($line, '"',1)
 			_DebugReport( "Result: " & Action_SearchText($oIE, $arr[2]))
 			
 		EndIf
 		
-   ElseIf StringInStr( $linha , $selectRadio , 0 ) == 1 Then
+   ElseIf StringInStr( $line , $selectRadio , 0 ) <> 0 Then
 		
-		If StringRegExp($linha, $option, 0) == 1 Then
+		If StringInStr($line, $option, 0) <> 0 Then
 			Local $arr 
-			$arr = StringSplit($linha, " ",1)
+			$arr = StringSplit($line, " ",1)
 			
 			Action_Option($oIE,$arr[$arr[0]])
 		 EndIf
 		 
-   ElseIf StringInStr($linha, $selectCombo, 0) Then
+   ElseIf StringInStr($line, $selectCombo, 0) <> 0 Then
 	  
-	  If StringRegExp($linha, $option, 0) == 1 Then
+	  If StringInStr($line, $option, 0) <> 0 Then
 			Local $arr 
-			$arr = StringSplit($linha, " ",1)
+			$arr = StringSplit($line, " ",1)
 			
 			Action_Option($oIE,$arr[$arr[0]])
 		 EndIf
 	  
-   ElseIf StringInStr($linha, $submit, 0) == 1 Then
+   ElseIf StringInStr($line, $submit, 0) <> 0 Then
 	  Action_FormSubmit($oIE, 0)
 	  
-   ElseIf StringInStr($linha, "/", 0) Then
+   ElseIf StringInStr($line, "/", 0) Then
 		If IsObj($oIE) Then
 			_IEQuit($oIE)
 		EndIf
@@ -135,11 +133,9 @@ Func AnalyseLine($linha)
 	
 EndFunc
 
-
-
-Func Internationalization($line)
+Func Internationalization($lineI18N)
    Local $arr
-   $arr = StringSplit($line,":")
+   $arr = StringSplit($lineI18N,":")
    
    Switch $arr[1]
 	  Case "who"
@@ -192,4 +188,3 @@ Func Internationalization($line)
    EndSwitch
 
 EndFunc
-

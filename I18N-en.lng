@@ -1,0 +1,17 @@
+who:I as
+what:Need
+why:For
+scenario:Scenario
+given:Given
+when:When
+then:Then
+navigate:navigate
+type:And fill
+find:see
+click:And click
+selectRadio:And select
+selectCombo:And choise
+inputtxt:the field
+button:button
+submit:And send
+option:option
