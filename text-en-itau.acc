@@ -1,0 +1,16 @@
+I as home buyer, Need simulate financiament, For verify if can get the bank product
+
+Scenario 1 - Verify type of financiament
+Given i open browser
+When navigate para https://ww3.itau.com.br/imobline/pre/simuladores_new/fichaProposta/index.aspx?IMOB_TipoBKL=&ident_bkl=pre
+And fill the field "txtValorImovel" com valor "80000"
+And fill the field "txtValorEntrada" com valor "10000"
+And fill the field "txtPrazo" com valor "120"
+And fill the field "txtDiaNascProp1" com valor "11"
+And fill the field "txtMesNascProp1" com valor "09"
+And fill the field "txtAnoNascProp1" com valor "1986"
+And fill the field "txtAnoNascProp1" com valor "1986"
+And fill the field "txtValorRendaProp1" com valor "3000"
+And click on button "btSimular"
+Then see the text "70.000,00"
+/

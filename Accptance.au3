@@ -23,7 +23,7 @@ Dim $oIE
 
 _FileReadToArray($arquivo[1]&"\"&$arquivo[2],$array)
 
-_DebugSetup ("AcceptanceIt: "&$arquivo[2], False, 1)
+_DebugSetup ("AcceptanceIt: "&$arquivo[2], False, 5)
 
 ;read lines of internacionalization
 Dim $who,$what,$why
@@ -37,7 +37,7 @@ If Not _FileReadToArray("I18N-en.lng", $aRecords) Then
 EndIf
 
 For $x = 1 To $aRecords[0]
-    ;MsgBox(0, 'Record:' & $x, $aRecords[$x])
+    
 	Internationalization($aRecords[$x])
 Next
 
@@ -76,14 +76,15 @@ Func AnalyseLine($line)
 	;See if have text to fill
    ElseIf StringInStr( $line , $type ,0) <> 0 Then
 		
-		;
+		;get element and text
 		If StringInStr($line, $inputtxt, 0) <> 0 Then
 			Local $arr 
 			$arr = StringSplit($line, '"',1)
 			
-			Action_TextboxType($oIE, "0", $arr[2], $arr[4])
+			Action_TextboxType($oIE, $arr[2], $arr[4])
 		EndIf
 		
+	;See if have button to click
    ElseIf StringInStr( $line , $click,0) <> 0 Then
 		
 		If StringInStr($line, $button, 0) <> 0 Then
@@ -94,6 +95,7 @@ Func AnalyseLine($line)
 			
 		EndIf
 		
+	;See if have word Then for find anything
    ElseIf StringInStr( $line , $then ,0) <> 0 Then
 		
 		If StringInStr($line, $find, 0) <> 0 Then
@@ -103,6 +105,7 @@ Func AnalyseLine($line)
 			
 		EndIf
 		
+   ;See if have radio button to select
    ElseIf StringInStr( $line , $selectRadio , 0 ) <> 0 Then
 		
 		If StringInStr($line, $option, 0) <> 0 Then
@@ -122,7 +125,7 @@ Func AnalyseLine($line)
 		 EndIf
 	  
    ElseIf StringInStr($line, $submit, 0) <> 0 Then
-	  Action_FormSubmit($oIE, 0)
+	  Action_FormSubmit($oIE)
 	  
    ElseIf StringInStr($line, "/", 0) Then
 		If IsObj($oIE) Then

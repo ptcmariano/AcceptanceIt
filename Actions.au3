@@ -10,6 +10,8 @@
 #include <IE.au3>
 #include <Debug.au3>
 
+Dim $formNameUsed
+
 ; #FUNCTION# ====================================================================================================================
 ; Name...........: Action_FormSubmit
 ; Description ...: 
@@ -26,10 +28,10 @@
 ; * 
 ; 
 ; ===============================================================================================================================
-Func Action_FormSubmit($oIE, $idForm)
+Func Action_FormSubmit($oIE)
 	
-	$oForm = _IEFormGetCollection($oIE, $idForm)
-	MsgBox(0,"","Submitou")
+	$oForm = _IEFormGetObjByName($oIE, $formNameUsed)
+	;MsgBox(0,"","Submitou: "& $formNameUsed)
 	_IEFormSubmit($oForm)
 	
 EndFunc
@@ -116,24 +118,33 @@ EndFunc
 ; Name...........: Action_TextboxType
 ; Description ...: Click on button
 ; Syntax.........: Action_TextboxType($text)
-; Parameters ....: $oIE, $idForm, $id, $text = "text"
-; Return values .: 
+; Parameters ....:  $oIE, object needed to handle web page
+;					$idForm, form how find the inputs
+;					$id, name or id of input form element to type the text
+;					$text = "text", the text to type on input
+; 
 ; Author ........: Paulo.Mariano
 ; Modified.......: 
 ; Remarks .......: Find on forms the fild selected and fill with text
-; Related .......: _IEFormElementSetValue
-; Link ..........:
+; Related .......: _IEFormElementSetValue, _IEFormElementGetObjByName
+; 
 ; Example .......:
 ; 
-; *
+; * 
 ; 
 ; ===============================================================================================================================
-Func Action_TextboxType($oIE, $idForm, $id, $text = "text")
+Func Action_TextboxType($oIE, $id, $text = "text")
 	
-	$oForm = _IEFormGetCollection($oIE, $idForm)
+	$oForms = _IEFormGetCollection($oIE)
 	
-	$oQuery = _IEFormElementGetObjByName ($oForm, $id)
-	
+	For $oForm In $oForms
+		If _IEFormElementGetObjByName($oForm, $id) <> 0 Then
+			$oQuery = _IEFormElementGetObjByName ($oForm, $id)
+			$formNameUsed = $oForm.name
+		EndIf
+		
+	Next
+
 	_IEFormElementSetValue ($oQuery, $text)
 	
 EndFunc
